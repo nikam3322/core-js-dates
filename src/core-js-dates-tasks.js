@@ -17,8 +17,9 @@
  * '01 Jan 1970 00:00:00 UTC' => 0
  * '04 Dec 1995 00:12:00 UTC' => 818035920000
  */
-function dateToTimestamp(/* date */) {
-  throw new Error('Not implemented');
+function dateToTimestamp(date) {
+  const dateObj = new Date(date);
+  return dateObj.getTime();
 }
 
 /**
@@ -31,8 +32,20 @@ function dateToTimestamp(/* date */) {
  * Date(2023, 5, 1, 8, 20, 55) => '08:20:55'
  * Date(2015, 10, 20, 23, 15, 1) => '23:15:01'
  */
-function getTime(/* date */) {
-  throw new Error('Not implemented');
+function getTime(date) {
+  let hours = date.getHours();
+  let minutes = date.getMinutes();
+  let seconds = date.getSeconds();
+  if (hours < 10) {
+    hours = `0${hours}`;
+  }
+  if (minutes < 10) {
+    minutes = `0${minutes}`;
+  }
+  if (seconds < 10) {
+    seconds = `0${seconds}`;
+  }
+  return `${hours}:${minutes}:${seconds}`;
 }
 
 /**
@@ -46,8 +59,10 @@ function getTime(/* date */) {
  * '03 Dec 1995 00:12:00 UTC' => 'Sunday'
  * '2024-01-30T00:00:00.000Z' => 'Tuesday'
  */
-function getDayName(/* date */) {
-  throw new Error('Not implemented');
+function getDayName(date) {
+  const dateObj = new Date(date);
+  const options = { weekday: 'long' };
+  return new Intl.DateTimeFormat('en-US', options).format(dateObj);
 }
 
 /**
@@ -61,8 +76,16 @@ function getDayName(/* date */) {
  * Date('2024-02-13T00:00:00Z') => Date('2024-02-16T00:00:00Z')
  * Date('2024-02-16T00:00:00Z') => Date('2024-02-23T00:00:00Z')
  */
-function getNextFriday(/* date */) {
-  throw new Error('Not implemented');
+function getNextFriday(date) {
+  const targetDate = new Date(date);
+  const targetDay = 5;
+  const delta = targetDay - date.getDay();
+  if (delta > 0) {
+    targetDate.setDate(date.getDate() + delta);
+  } else {
+    targetDate.setDate(date.getDate() + 7 + delta);
+  }
+  return targetDate;
 }
 
 /**
@@ -76,8 +99,10 @@ function getNextFriday(/* date */) {
  * 1, 2024 => 31
  * 2, 2024 => 29
  */
-function getCountDaysInMonth(/* month, year */) {
-  throw new Error('Not implemented');
+function getCountDaysInMonth(month, year) {
+  const dateObj = new Date(year, month - 1);
+  const nextMonth = new Date(year, month);
+  return Math.round((nextMonth - dateObj) / 1000 / 3600 / 24);
 }
 
 /**
